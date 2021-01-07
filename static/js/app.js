@@ -12,69 +12,42 @@ console.log(data);
 
 var names = data.names;
 var demographics = data.metadata;
+var samples = data.samples;
 
 names.forEach((name) => {
 	var selectList =  d3.select("#selDataset").append("option").text(name)                       
 });
 
 function optionChanged(subjectID){
-	console.log(subjectID)
-	displayDemographics(subjectID)
+	console.log(subjectID);
+	displayDemographics(subjectID);
+	barPlot(subjectID);
 };
 
+// Requirements 4&5: Display each key-value pair from the metadata JSON object
 function displayDemographics (sampleID) {
-	let demoInfo = demographics.filter(sample => sample.id == sampleID)[0];
-	var list =  d3.select("#sample-metadata");
-	list.html("");
-
-	// append stats to the list
-	list.append("p").text(`id: ${demoInfo.id}`);
-	list.append("p").text(`ethnicity: ${demoInfo.ethnicity}`);
-	list.append("p").text(`gender: ${demoInfo.gender}`);
-	list.append("p").text(`age: ${demoInfo.age}`);
-	list.append("p").text(`location: ${demoInfo.location}`);
-	list.append("p").text(`bbtype: ${demoInfo.bbtype}`);
-	list.append("p").text(`wfreq: ${demoInfo.wfreq}`);
-
+	let demoInfo = demographics.filter(sample => sample.id == sampleID)[0];	// filter the demographics array for the selected id
+	let list =  d3.select("#sample-metadata");								// create reference to the list element in index.html
+	list.html("");															// clear the old list
+	for (i in demoInfo) { list.append("p").text(i + ": " + demoInfo[i])}	// append metadata to the list
 	console.log(demoInfo);
 };
 
-//});
-/*
-data.sort(function(a, b) {
-    return parseFloat(b.greekSearchResults) - parseFloat(a.greekSearchResults);
-  });
+function barPlot(sampleID){
+	let sampleInfo = samples.filter(sample => sample.id == sampleID)[0];	// filter the samples array for the selected id
+	let vals = sampleInfo.sample_values.slice(0, 10).reverse();
+	let otu_ids = sampleInfo.otu_ids.slice(0, 10).reverse();
+	let otu_labels = sampleInfo.otu_labels.slice(0, 10).reverse();
+	let otuIDs = []
+	for (ids in otu_ids) {otuIDs.push("OTU " + otu_ids[ids])}
 
-  // Slice the first 10 objects for plotting
-  data = data.slice(0, 10);
+	Plotly.newPlot("bar", [{
+		x: vals,
+	    y: otuIDs,
+	    text: otu_labels,
+	    type: "bar",
+	    orientation: "h"}],
+	    {title: "Top 10 OTUs Found"}
+	);
+}
 
-  // Reverse the array due to Plotly's defaults
-  data = data.reverse();
-
-  // Trace1 for the Greek Data
-  var trace1 = {
-    x: data.map(row => row.greekSearchResults),
-    y: data.map(row => row.greekName),
-    text: data.map(row => row.greekName),
-    name: "Greek",
-    type: "bar",
-    orientation: "h"
-  };
-
-  // data
-  var chartData = [trace1];
-
-  // Apply the group bar mode to the layout
-  var layout = {
-    title: "Greek gods search results",
-    margin: {
-      l: 100,
-      r: 100,
-      t: 100,
-      b: 100
-    }
-  };
-
-  // Render the plot to the div tag with id "plot"
-  Plotly.newPlot("plot", chartData, layout);
-  */
