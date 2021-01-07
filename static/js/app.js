@@ -33,6 +33,7 @@ function displayDemographics (sampleID) {
 	console.log(demoInfo);
 };
 
+// Requirement 2: Create a horizontal barchart with a dropdown menu to display the top 10 OTUs found in that individual
 function barPlot(sampleID){
 	let sampleInfo = samples.filter(sample => sample.id == sampleID)[0];	// filter the samples array for the selected id
 	let vals = sampleInfo.sample_values.slice(0, 10).reverse();
