@@ -18,10 +18,11 @@ names.forEach((name) => {
 	var selectList =  d3.select("#selDataset").append("option").text(name)                       
 });
 
+// Requirement 6: Update all of the plots any time that a new sample is selected
 function optionChanged(subjectID){
 	console.log(subjectID);
 	displayDemographics(subjectID);
-	barPlot(subjectID);
+	buildPlots(subjectID);
 };
 
 // Requirements 4&5: Display each key-value pair from the metadata JSON object
@@ -33,22 +34,32 @@ function displayDemographics (sampleID) {
 	console.log(demoInfo);
 };
 
-// Requirement 2: Create a horizontal barchart with a dropdown menu to display the top 10 OTUs found in that individual
-function barPlot(sampleID){
+// Requirements 2&3: Build Plots
+function buildPlots(sampleID){
 	let sampleInfo = samples.filter(sample => sample.id == sampleID)[0];	// filter the samples array for the selected id
-	let vals = sampleInfo.sample_values.slice(0, 10).reverse();
-	let otu_ids = sampleInfo.otu_ids.slice(0, 10).reverse();
-	let otu_labels = sampleInfo.otu_labels.slice(0, 10).reverse();
+	let vals = sampleInfo.sample_values;
+	let otu_ids = sampleInfo.otu_ids;
+	let otu_labels = sampleInfo.otu_labels;
 	let otuIDs = []
 	for (ids in otu_ids) {otuIDs.push("OTU " + otu_ids[ids])}
 
+// Requirement 2: Create a horizontal barchart with a dropdown menu to display the top 10 OTUs found in that individual
 	Plotly.newPlot("bar", [{
-		x: vals,
-	    y: otuIDs,
-	    text: otu_labels,
+		x: vals.slice(0, 10).reverse(),
+	    y: otuIDs.slice(0, 10).reverse(),
+	    text: otu_labels.slice(0, 10).reverse(),
 	    type: "bar",
 	    orientation: "h"}],
 	    {title: "Top 10 OTUs Found"}
 	);
-}
 
+// Requirement 3: Create a bubblechart that displays each sample
+	Plotly.newPlot("bubble", [{
+		x: otu_ids,
+	    y: vals,
+	    mode: 'markers',
+  		marker: {color: otu_ids, size: vals},
+	    text: otu_labels}],
+	    {title: "Operational Taxonomic Units Found"}
+	);
+}
