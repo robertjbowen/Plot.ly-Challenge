@@ -21,8 +21,8 @@ names.forEach((name) => {
 // Requirement 6: Update all of the plots any time that a new sample is selected
 function optionChanged(subjectID){
 	console.log(subjectID);
-	displayDemographics(subjectID);
-	buildPlots(subjectID);
+	let subjectInfo = displayDemographics(subjectID);
+	buildPlots(subjectID, subjectInfo);
 };
 
 // Requirements 4&5: Display each key-value pair from the metadata JSON object
@@ -32,10 +32,11 @@ function displayDemographics (sampleID) {
 	list.html("");															// clear the old list
 	for (i in demoInfo) { list.append("p").text(i + ": " + demoInfo[i])}	// append metadata to the list
 	console.log(demoInfo);
+	return demoInfo;
 };
 
 // Requirements 2&3: Build Plots
-function buildPlots(sampleID){
+function buildPlots(sampleID, sampleDem){
 	let sampleInfo = samples.filter(sample => sample.id == sampleID)[0];	// filter the samples array for the selected id
 	let vals = sampleInfo.sample_values;
 	let otu_ids = sampleInfo.otu_ids;
@@ -62,4 +63,21 @@ function buildPlots(sampleID){
 	    text: otu_labels}],
 	    {title: "Operational Taxonomic Units Found"}
 	);
+
+// Advanced Challenge Assignment: Create a Gauge Chart to plot the weekly washing frequency of the individual
+	Plotly.newPlot('gauge', [{
+		domain: { x: [0, 1], y: [0, 1] },
+		value: sampleDem.wfreq,
+		title: { text: "Weekly Washing Frequency" },
+		type: "indicator",
+		mode: "gauge+number",
+		gauge: {
+      		axis: { range: [null, 9] },
+      		steps: [
+        		{ range: [0, 3], color: "lightblue" },
+        		{ range: [3, 6], color: "darkblue" },
+        		{ range: [6, 9], color: "blue" }
+      		]}}],
+      	{width: 600, height: 500, margin: { t: 0, b: 0 }}
+    );
 }
