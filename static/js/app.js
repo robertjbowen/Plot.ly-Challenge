@@ -6,11 +6,11 @@ d3.json("data/samples.json", function(data) {
 	var names = data.names;
 	var demographics = data.metadata;
 	var samples = data.samples;
-});
+
 //Convert the test subject id numbers from the names array into html select list options and append them to the select list
-names.forEach((name) => {
-	var selectList =  d3.select("#selDataset").append("option").text(name)                       
-});
+	names.forEach((name) => {
+		var selectList =  d3.select("#selDataset").append("option").text(name)                       
+	});
 
 // Requirement 6: Update all of the plots any time that a new sample is selected
 function optionChanged(subjectID){											// function called by index.html whenever a new test subject id is selected
@@ -76,3 +76,4 @@ function buildPlots(sampleID, sampleDem){
       	{width: 600, height: 500, margin: { t: 0, b: 0 }}					// formats the display dimensions of the plot
     );
 };
+});
