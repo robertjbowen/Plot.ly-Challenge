@@ -1,36 +1,33 @@
-// Requirement 1: Use D3 fetch to read the JSON file
-d3.json("data/samples.json", function(data) {
-  console.log(data);
-
-// Extract the data set 
-	var names = data.names;
-	var demographics = data.metadata;
-	var samples = data.samples;
-
-//Convert the test subject id numbers from the names array into html select list options and append them to the select list
-	names.forEach((name) => {
-		var selectList =  d3.select("#selDataset").append("option").text(name)                       
-	});
+// Created by Robert J. Bowen
+// 9 January 2021
+// Note: Because this file uses D3.json to import the data, if running locally, you will need to run index.html from a local host server or you will receive a fetch error. 
 
 // Requirement 6: Update all of the plots any time that a new sample is selected
-function optionChanged(subjectID){											// function called by index.html whenever a new test subject id is selected
-	console.log(subjectID);	
-	let subjectInfo = displayDemographics(subjectID);						// calls the funtion to display the test subject demographics
-	buildPlots(subjectID, subjectInfo);										// calls the funtion to display the three data plots
-};
+function optionChanged(subjectID) {
+	console.log(subjectID);
 
-// Requirements 4&5: Display each key-value pair from the metadata JSON object
-function displayDemographics (sampleID) {
-	let demoInfo = demographics.filter(sample => sample.id == sampleID)[0];	// filter the demographics array for the selected id
-	let list =  d3.select("#sample-metadata");								// create reference to the list element in index.html
-	list.html("");															// clear the old list
-	for (i in demoInfo) { list.append("p").text(i + ": " + demoInfo[i])}	// append metadata to the list
-	console.log(demoInfo);
-	return demoInfo;														// returns the demographic info variable to be passed to the buildplots function
-};
+// Requirement 1: Use D3 fetch to read the JSON file	
+	d3.json("data/samples.json").then(data => {
+		console.log(data);
+  
 
-// Requirements 2&3: Build Plots
-function buildPlots(sampleID, sampleDem){
+// Extract the data set 
+		let names = data.names;
+		let demographics = data.metadata;
+		let samples = data.samples;
+
+//Convert the test subject id numbers from the names array into html select list options and append them to the select list
+		names.forEach((name) => {
+			let selectList =  d3.select("#selDataset").append("option").text(name)                       
+		});
+
+		let subjectInfo = displayDemographics(subjectID, demographics);		// calls the funtion to display the test subject demographics
+		buildPlots(subjectID, samples, subjectInfo);						// calls the funtion to display the three data plots
+	});
+}
+
+// Requirements 2,3, and Advanced Challenge Assignment: Build Plots
+function buildPlots(sampleID, samples, sampleDem){
 	let sampleInfo = samples.filter(sample => sample.id == sampleID)[0];	// filter the samples array for the selected test subject id
 	let vals = sampleInfo.sample_values;									// extracts the sample values data for the test subject
 	let otu_ids = sampleInfo.otu_ids;										// extracts the otu ids data for the test subject
@@ -71,9 +68,20 @@ function buildPlots(sampleID, sampleDem){
       		steps: [
         		{ range: [0, 3], color: "lightblue" },						// divides the gauge into three ranges and assigns a different color to each
         		{ range: [3, 6], color: "darkblue" },
-        		{ range: [6, 9], color: "red" }
+        		{ range: [6, 9], color: "blue" }
       		]}}],
       	{width: 600, height: 500, margin: { t: 0, b: 0 }}					// formats the display dimensions of the plot
     );
 };
-});
+
+// Requirements 4&5: Display each key-value pair from the metadata JSON object
+function displayDemographics (sampleID, demographics) {
+	let demoInfo = demographics.filter(sample => sample.id == sampleID)[0];	// filter the demographics array for the selected id
+	let list =  d3.select("#sample-metadata");								// create reference to the list element in index.html
+	list.html("");															// clear the old list
+	for (i in demoInfo) { list.append("p").text(i + ": " + demoInfo[i])}	// append metadata to the list
+	console.log(demoInfo);
+	return demoInfo;														// returns the demographic info variable to be passed to the buildplots function
+};
+
+optionChanged(940);															// initializes the page by calling the optionChanged function for subject id '940'
