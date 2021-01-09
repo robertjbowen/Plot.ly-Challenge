@@ -59,7 +59,7 @@ The purpose of this challenge is to build an interctive dashboard by importing J
     <em>app.js 'onchange' function</em>
 </p>
 
-	a. The 'optionChanged' function takes the input of the subject id number and imports the samples.json data set using the d3.json library. The data set is a dictionary with three key values (names, metadata, and samples) and the values of 153 samples. 
+a. The 'optionChanged' function takes the input of the subject id number and imports the samples.json data set using the d3.json library. The data set is a dictionary with three key values (names, metadata, and samples) and the values of 153 samples. 
 
 <p>
     <img src="https://github.com/robertjbowen/Plot.ly-Challenge/blob/main/images/Picture9.png"/>
@@ -67,7 +67,7 @@ The purpose of this challenge is to build an interctive dashboard by importing J
     <em>app.js data import using d3.json</em>
 </p>
 
-	b. The data values for each of the three primary keys are read into array variables (names, demographics, and samples) for use by subsequent functions.
+b. The data values for each of the three primary keys are read into array variables (names, demographics, and samples) for use by subsequent functions.
 
 <p>
     <img src="https://github.com/robertjbowen/Plot.ly-Challenge/blob/main/images/Picture14.png"/>
@@ -75,7 +75,7 @@ The purpose of this challenge is to build an interctive dashboard by importing J
     <em>app.js extracting the data to arrays</em>
 </p>
 
-	c. The function generates the select list used later to call the function by iterating through the "names" array and creating an html "option" element for each value which it then appends to the html select list object in index.html.
+c. The function generates the select list used later to call the function by iterating through the "names" array and creating an html "option" element for each value which it then appends to the html select list object in index.html.
 
 <p>
     <img src="https://github.com/robertjbowen/Plot.ly-Challenge/blob/main/images/Picture10.png"/>
@@ -87,7 +87,7 @@ The purpose of this challenge is to build an interctive dashboard by importing J
     <em>Rendered Select List in the Dashboard</em>
 </p>
   
-	d. The 'optionChanged function calls the other functions( displayDemographics and buildPlots) passing the extracted data values and the subject id values to each.
+d. The 'optionChanged function calls the other functions( displayDemographics and buildPlots) passing the extracted data values and the subject id values to each.
 
 <p>
     <img src="https://github.com/robertjbowen/Plot.ly-Challenge/blob/main/images/Picture11.png"/>
