@@ -67,8 +67,8 @@ function buildPlots(sampleID, samples, sampleDem){
       		axis: { range: [null, 9] },										// sets the fixed of the range to be between 0 and 9
       		steps: [
         		{ range: [0, 3], color: "lightblue" },						// divides the gauge into three ranges and assigns a different color to each
-        		{ range: [3, 6], color: "darkblue" },
-        		{ range: [6, 9], color: "blue" }
+        		{ range: [3, 6], color: "blue" },
+        		{ range: [6, 9], color: "darkblue" }
       		]}}],
       	{width: 600, height: 500, margin: { t: 0, b: 0 }}					// formats the display dimensions of the plot
     );
